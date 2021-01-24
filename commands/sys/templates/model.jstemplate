@@ -1,0 +1,41 @@
+const mongoose = require("mongoose");
+
+const Schema = new mongoose.Schema(
+    {
+        isActive: {
+            type: Boolean,
+            required: false,
+            default: true
+        },
+        isDeleted: {
+            default: false,
+            type: Boolean
+        },
+        createdBy: {
+            type: mongoose.Schema.ObjectId,
+            required: false,
+            ref: 'User'
+        },
+        updatedBy: {
+            type: mongoose.Schema.ObjectId,
+            required: false,
+            ref: 'User'
+        }
+    },
+    {
+        timestamps: true,
+        toObject: {
+            transform: (obj, ret) => {
+                delete ret.password;
+                delete ret.__v;
+                ret.id = ret._id;
+                delete ret.password;
+                delete ret._id;
+                return ret;
+            }
+        }
+    }
+);
+
+const __MODEL_NAME__ = mongoose.model("__MODEL_NAME__", Schema);
+module.exports = __MODEL_NAME__;
